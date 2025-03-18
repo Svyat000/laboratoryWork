@@ -24,7 +24,7 @@ def create_db():
         )
     ''')
 
-    # Добавляем больше тестовых данных
+    # Добавляем тестовые данные
     test_data = [
         ('Иванов И.И.', 'Высшее', 'Менеджер', '15.05.2018', 42000.0),
         ('Петров П.П.', 'Среднее', 'Инженер', '10.10.2019', 45000.0),
@@ -227,17 +227,17 @@ class AccountingApp:
                 messagebox.showwarning("Ошибка", "Нет данных для прогнозирования")
                 return
 
-            # Преобразование дат с явным указанием формата
+            # Преобразовываем даты с явным указанием формата
             df['hire_date'] = pd.to_datetime(df['hire_date'], format='%d.%m.%Y', errors='coerce')
 
-            # Удаление некорректных записей
+            # Удаляем некорректные записи
             df = df.dropna(subset=['hire_date'])
 
             if df.empty:
                 messagebox.showwarning("Ошибка", "Нет корректных данных для прогнозирования")
                 return
 
-            # Расчет стажа в годах с точностью до месяца
+            # Расчет стажа в годах, точность до месяца
             current_date = datetime.now()
             df['experience'] = df['hire_date'].apply(
                 lambda x: (current_date - x).days / 365.25
@@ -254,7 +254,7 @@ class AccountingApp:
             X = df[['experience']]
             y = df['salary']
 
-            # Обучение модели с весами (более новые данные имеют больший вес)
+            # Обучение модели с весами
             model = LinearRegression()
             model.fit(X, y)
 
